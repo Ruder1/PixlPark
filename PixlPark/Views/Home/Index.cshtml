@@ -3,6 +3,38 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h2>User Name Form</h2>
+    <form method="post">
+        <p>
+        <label>Email:</label><br />
+            <input 
+                type="email" 
+                placeholder="user@gmail.com" 
+                id="Email"
+                name="Email" /><br />
+        </p>
+        
+        <p>
+        
+            <label 
+                for="Message">
+                Message:
+            </label><br />
+
+            <textarea 
+                class="Message"
+                name="Message" 
+                id="Message" 
+                placeholder="Не более 200 символов"
+                maxlength="200"></textarea>
+        </p>
+
+        <p>
+        <input 
+            type="submit" 
+            value="Send" />
+        </p>
+
+    </form>
+
 </div>
