@@ -1,3 +1,5 @@
+using PixlPark.RabbitMq;
+
 namespace PixlPark
 {
     public class Program
@@ -8,6 +10,9 @@ namespace PixlPark
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddControllers();
+            
+            builder.Services.AddTransient<IRabbitMqService,RabbitMqService>();
 
             var app = builder.Build();
 

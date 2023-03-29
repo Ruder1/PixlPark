@@ -23,12 +23,11 @@ namespace PixlPark.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
-
+        
+        
         [HttpGet]
         public IActionResult Index() => View();
 
-        [HttpPost]
-        public string Index(string Email,string Message) => $"Email: {Email}\n Message: {Message}";
+        
     }
 }
