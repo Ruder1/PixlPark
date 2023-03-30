@@ -13,11 +13,6 @@ namespace PixlPark.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public IActionResult Privacy()
         {
             return View();
@@ -28,5 +23,11 @@ namespace PixlPark.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+        
+        
+        [HttpGet]
+        public IActionResult Index() => View();
+
+        
     }
 }

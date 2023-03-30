@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  pixlpark:
+    image: ${DOCKER_REGISTRY-}pixlpark
+    build:
+      context: .
+      dockerfile: PixlPark/Dockerfile
+
+  rabbitmqlistener:
+    image: ${DOCKER_REGISTRY-}rabbitmqlistener
+    build:
+      context: .
+      dockerfile: RabbitMqListener/Dockerfile
+
