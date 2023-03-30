@@ -20,7 +20,7 @@ namespace PixlPark.Controllers
         {
             return View();
         }
-
+             
         [HttpPost]
         public IActionResult SendMessage()
         {
@@ -30,7 +30,7 @@ namespace PixlPark.Controllers
                 Message = Request.Form["message"]
             };
             _mqService.SendMessage(mail);
-
+            
             return Ok("Сообщение отправлено в очередь");
         }
 
