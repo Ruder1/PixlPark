@@ -12,25 +12,36 @@ namespace RabbitMqListener
     {
         public void MessageSend(MailModel mail)
         {
-            var message = new MimeMessage();
-            message.From.Add(new MailboxAddress("Example", "Ruder1234@yandex.ru"));
-            message.To.Add(new MailboxAddress("Send", mail.Email));
-            message.Subject = "Test Sending";
-
-            message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            try
             {
-                Text = mail.Message
-            };
+                var message = new MimeMessage();
+                message.From.Add(new MailboxAddress("Example", "Ruder1234@yandex.ru"));
+                message.To.Add(new MailboxAddress("Send", mail.Email));
+                message.Subject = "Test Sending";
 
-            using (var client = new SmtpClient())
+                message.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+                {
+                    Text = mail.Message
+                };
+
+                using (var client = new SmtpClient())
+                {
+                    client.Connect("smtp.yandex.ru", 465, true);
+
+                    // Note: only needed if the SMTP server requires authentication
+                    client.Authenticate("Ruder1234@yandex.ru", "tcenifdqvozkkhnj");
+
+                    client.Send(message);
+                    client.Disconnect(true);
+                }
+                string str = "Сообщение доставлено";
+                Console.WriteLine(str);
+                new RabbitServer().RabbitSender(str);
+            } 
+            catch (Exception ex)
             {
-                client.Connect("smtp.yandex.ru", 465, true);
-
-                // Note: only needed if the SMTP server requires authentication
-                client.Authenticate("Ruder1234@yandex.ru", "tcenifdqvozkkhnj");
-
-                client.Send(message);
-                client.Disconnect(true);
+                Console.WriteLine(ex.ToString());
+                new RabbitServer().RabbitSender(ex.Message);
             }
         }
     }

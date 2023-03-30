@@ -30,8 +30,9 @@ namespace PixlPark.Controllers
                 Message = Request.Form["message"]
             };
             _mqService.SendMessage(mail);
-            
-            return Ok("Сообщение отправлено в очередь");
+            Thread.Sleep(1000);
+            var str = _mqService.ReceiveMessage();
+            return Ok("Сообщение Отправлено" + str);
         }
 
         

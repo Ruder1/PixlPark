@@ -8,7 +8,7 @@ namespace RabbitMqListener
     {
         static void Main(string[] args)
         {
-            new RabbitServer().RabbitReciever();  
+            new RabbitServer().RabbitReceiver();  
         }
     }
 }

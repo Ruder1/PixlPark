@@ -11,7 +11,7 @@ namespace RabbitMqListener
 {
     public class RabbitServer
     {
-        public void RabbitReciever()
+        public void RabbitReceiver()
         {
             var factory = new ConnectionFactory() { HostName = "localhost" };
 
@@ -24,6 +24,7 @@ namespace RabbitMqListener
                                      autoDelete: false,
                                      arguments: null);
 
+                
                 var consumer = new EventingBasicConsumer(channel);
                 consumer.Received += (model, ea) =>
                 {
@@ -32,12 +33,35 @@ namespace RabbitMqListener
                     Console.WriteLine(" [x] Received {0} {1}", message.Email,message.Message);
                     new MailSending().MessageSend(message);
                 };
+                
                 channel.BasicConsume(queue: "MyQueue",
                                      autoAck: true,
                                      consumer: consumer);
+
                 
                 Console.WriteLine(" Press [enter] to exit.");
                 Console.ReadLine();
+            }
+        }
+
+        public void RabbitSender(string message)
+        {
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: "Server",
+                               durable: false,
+                               exclusive: false,
+                               autoDelete: false,
+                               arguments: null);
+
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(exchange: "",
+                               routingKey: "Server",
+                               basicProperties: null,
+                               body: body);
             }
         }
     }

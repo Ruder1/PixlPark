@@ -1,6 +1,8 @@
 ﻿using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Text;
 using System.Text.Json;
+using System.Threading.Channels;
 
 namespace PixlPark.RabbitMq
 {
@@ -33,6 +35,39 @@ namespace PixlPark.RabbitMq
                                basicProperties: null,
                                body: body);
             }
+        }
+
+        public string ReceiveMessage()
+        {
+            var factory = new ConnectionFactory() { HostName = "localhost" };
+
+            using (var connection = factory.CreateConnection())
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(queue: "Server",
+                                     durable: false,
+                                     exclusive: false,
+                                     autoDelete: false,
+                                     arguments: null);
+
+
+                var consumer = new EventingBasicConsumer(channel);
+                string str = "";
+                consumer.Received += (model, ea) =>
+                {
+                    var body = ea.Body.ToArray();
+                    var message = Encoding.UTF8.GetString(body);
+                    str = message;
+                };
+
+                channel.BasicConsume(queue: "Server",
+                                     autoAck: true,
+                                     consumer: consumer);
+
+                return str;
+
+            }
+
         }
     }
 }

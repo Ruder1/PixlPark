@@ -4,5 +4,7 @@
     {
         void SendMessage(object obj);
         void SendMessage(string message);
+
+        string ReceiveMessage();
     }
 }
